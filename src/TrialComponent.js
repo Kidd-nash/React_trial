@@ -15,12 +15,45 @@ function TrialComponent() {
 
     const [arrayOfItems, setArrayOfItems] = useState(anArray);
 
+    let aTrialObject = {
+        id: "",
+        series: ""
+    };
+
+    const [currentObject, setCurrentObject] = useState(aTrialObject);
+
+    function addNew() {
+        let objects = arrayOfItems;
+        objects.push({
+            id: currentObject.id,
+            title: currentObject.title,
+            upVotes: 0
+        })
+    }
+
     function itemDeletion(id) {
         let afterSetItems = arrayOfItems.filter((item) => {
             return item.id != id;
         });
 
         setArrayOfItems(afterSetItems);
+    }
+
+    function addNewItem() {
+        setArrayOfItems([
+            ...arrayOfItems,
+            {
+                id: currentObject.id,
+                series: currentObject.series,
+                upVotes: 0
+            }
+        ]);
+    }
+    function handleChange(e) {
+        setCurrentObject({
+            ...currentObject,
+            [e.target.name]: e.target.value
+        })
     }
 
     return (
@@ -38,6 +71,26 @@ function TrialComponent() {
                     ))
                 }
             </ul>
+            <div>
+                <input 
+                    onChange={handleChange}
+                    type="text" 
+                    name="series" 
+                    id="series_name" 
+                    placeholder="insert series here"
+                    value={currentObject.series} />
+                <input 
+                    onChange={handleChange}
+                    type="text" 
+                    name="id" 
+                    id="id_series" 
+                    placeholder="insert id here"
+                    value={currentObject.id} />
+                <button 
+                    type="button" 
+                    onClick={addNewItem}>Add
+                    </button>
+            </div>
         </div>
     );
 }
