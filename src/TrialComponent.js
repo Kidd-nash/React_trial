@@ -40,14 +40,27 @@ function TrialComponent() {
     }
 
     function addNewItem() {
+        let maxId = Math.max(...arrayOfItems.map(item => item.id));
+        if (currentObject.id !== "") {
+            let temporaryObjects = arrayOfItems.map((item) => {
+                return {
+                    id: item.id,
+                    series: item.id === currentObject.id ? currentObject.series : item.series,
+                }
+            });
+            setArrayOfItems(temporaryObjects);
+            setCurrentObject(aTrialObject);
+            return;
+        }
         setArrayOfItems([
             ...arrayOfItems,
             {
-                id: currentObject.id,
+                id: maxId + 1,
                 series: currentObject.series,
                 upVotes: 0
             }
         ]);
+        setCurrentObject(aTrialObject);
     }
     function handleChange(e) {
         setCurrentObject({
@@ -64,9 +77,6 @@ function TrialComponent() {
             series: editItems[0].series
         })
     }
-
-
-
     return (
         <div>
             <p>String: {"A string"}</p>
@@ -93,14 +103,15 @@ function TrialComponent() {
                     value={currentObject.series} />
                 <input 
                     onChange={handleChange}
-                    type="text" 
+                    type="hidden" 
                     name="id" 
                     id="id_series" 
                     placeholder="insert id here"
                     value={currentObject.id} />
                 <button 
                     type="button" 
-                    onClick={addNewItem}>Add
+                    onClick={addNewItem}>
+                        { currentObject.id === "" ? "ADD" : "UPDATE"}
                     </button>
             </div>
         </div>
