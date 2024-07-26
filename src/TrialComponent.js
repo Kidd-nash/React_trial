@@ -19,8 +19,8 @@ function TrialComponent() {
             <button onClick={clickMessage}>Click</button>
             <ul>
                 {
-                    anArray.map((item) => (
-                        <li>
+                    anArray.map((item, index) => (
+                        <li key={`name_${index}`}> 
                             series:  {item.series}
                         </li>
                     ))
