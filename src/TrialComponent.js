@@ -55,6 +55,17 @@ function TrialComponent() {
             [e.target.name]: e.target.value
         })
     }
+    function editCurrentItem(id) {
+        let editItems = arrayOfItems.filter((item) => {
+            return item.id === id;
+        });
+        setCurrentObject({
+            id: editItems[0].id,
+            series: editItems[0].series
+        })
+    }
+
+
 
     return (
         <div>
@@ -67,6 +78,7 @@ function TrialComponent() {
                         <li key={`name_${index}`}> 
                             series:  {item.series}
                             <button onClick={() => itemDeletion(item.id)}>Delete</button>
+                            <button onClick={() => editCurrentItem(item.id)}>Edit</button>
                         </li>
                     ))
                 }
