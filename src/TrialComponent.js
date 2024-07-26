@@ -1,7 +1,7 @@
 function TrialComponent() {
     return (
         <div>
-            <p>Message.</p>
+            <p>String: {"A string"}</p>
         </div>
     );
 }
