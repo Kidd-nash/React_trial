@@ -22,21 +22,27 @@ function TrialComponent() {
         series: ""
     };
 
+    const [initialized, setInitialized] = useState(false);
     const [currentObject, setCurrentObject] = useState(aTrialObject);
 
     useEffect(() => {
-        refreshData();
-    }, [ ]);
+        if (!initialized) {
+            refreshData();
+            setInitialized(false);
+        }
+    }, [ crud ]);
 
-    function refreshData() {
+    const refreshData = () => {
         console.log('refreshing data');
         crud.retrieve()
             .then((tasks) => {
-                var taskObjects = tasks.map(function(loopItem) {
-                    return { id: loopItem.id, series: loopItem.title, main: loopItem.description };
-                  });
+                if ( Array.isArray(tasks) ) {
+                    var taskObjects = tasks.map(function(loopItem) {
+                        return { id: loopItem.id, series: loopItem.title, main: loopItem.description };
+                    });
 
-                setArrayOfItems(taskObjects);
+                    setArrayOfItems(taskObjects);
+                }
             });
     }
 
@@ -82,7 +88,9 @@ function TrialComponent() {
         ]);
         crud.create({
             title: currentObject.series,
-            description: currentObject
+            description: currentObject.series + ' ... desc'
+        }).then((response) => {
+            refreshData();
         });
         setCurrentObject(aTrialObject);
     }
