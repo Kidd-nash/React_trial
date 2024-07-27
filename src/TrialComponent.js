@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import Crud from "./crud";
 function TrialComponent() {
+    const crud = new Crud();
 
     let aVariable = "A variable string";
 
@@ -22,6 +24,14 @@ function TrialComponent() {
 
     const [currentObject, setCurrentObject] = useState(aTrialObject);
 
+    useEffect(() => {
+        // console.log('running use effect');
+        crud.retrieve();
+            // .then((response) => {
+
+            // });
+    }, [ anArray ]);
+
     function addNew() {
         let objects = arrayOfItems;
         objects.push({
@@ -32,6 +42,9 @@ function TrialComponent() {
     }
 
     function itemDeletion(id) {
+        crud.delete({
+            id: id
+        });
         let afterSetItems = arrayOfItems.filter((item) => {
             return item.id != id;
         });
@@ -48,6 +61,10 @@ function TrialComponent() {
                     series: item.id === currentObject.id ? currentObject.series : item.series,
                 }
             });
+            crud.update({
+                title: currentObject.series, 
+                id: currentObject.id
+            });
             setArrayOfItems(temporaryObjects);
             setCurrentObject(aTrialObject);
             return;
@@ -60,6 +77,10 @@ function TrialComponent() {
                 upVotes: 0
             }
         ]);
+        crud.create({
+            title: currentObject.series,
+            description: currentObject
+        });
         setCurrentObject(aTrialObject);
     }
     function handleChange(e) {

@@ -20,3 +20,5 @@ class Crud {
         console.log(task);
     }
 }
+
+export default Crud;
