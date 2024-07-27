@@ -31,8 +31,23 @@ class Crud {
     }
     //Delete
     delete (task) {
+        const url = `http://localhost:8080/api/tasks/${task.id}`;
         console.log("deleting");
-        console.log(task);
+        console.log(url);
+
+        return axios.delete(url)
+            .then(function (response) {
+                console.log('deleted task with id: ' + task.id);
+                // handle success
+                return response; //.data["hydra:member"];
+            })
+            .catch(function (error) {
+                // handle error
+                console.log(error);
+            })
+            .finally(function () {
+                // always executed
+            });
     }
 }
 

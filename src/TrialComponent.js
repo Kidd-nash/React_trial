@@ -29,6 +29,7 @@ function TrialComponent() {
     }, [ ]);
 
     function refreshData() {
+        console.log('refreshing data');
         crud.retrieve()
             .then((tasks) => {
                 var taskObjects = tasks.map(function(loopItem) {
@@ -49,14 +50,9 @@ function TrialComponent() {
     }
 
     function itemDeletion(id) {
-        crud.delete({
-            id: id
+        crud.delete({ id: id }).then((response) => {
+            refreshData();
         });
-        let afterSetItems = arrayOfItems.filter((item) => {
-            return item.id != id;
-        });
-
-        setArrayOfItems(afterSetItems);
     }
 
     function addNewItem() {
