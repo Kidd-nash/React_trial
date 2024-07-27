@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Crud from "./crud";
+
+let initialized = false;
 function TrialComponent() {
     const crud = new Crud();
 
@@ -21,18 +23,18 @@ function TrialComponent() {
         id: "",
         series: ""
     };
-
-    const [initialized, setInitialized] = useState(false);
     const [currentObject, setCurrentObject] = useState(aTrialObject);
 
     useEffect(() => {
+        console.log('useEffect');
         if (!initialized) {
+            console.log('useEffect refresh');
+            initialized = true;
             refreshData();
-            setInitialized(false);
         }
-    }, [ crud ]);
+    }, [ arrayOfItems, refreshData ]);
 
-    const refreshData = () => {
+    function refreshData() {
         console.log('refreshing data');
         crud.retrieve()
             .then((tasks) => {
@@ -44,6 +46,7 @@ function TrialComponent() {
                     setArrayOfItems(taskObjects);
                 }
             });
+        return true;
     }
 
     function addNew() {
