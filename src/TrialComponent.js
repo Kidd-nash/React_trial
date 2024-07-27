@@ -15,7 +15,7 @@ function TrialComponent() {
         { id: 2, series: "ibo", main: "barbatos_lupus" },
     ];
 
-    const [arrayOfItems, setArrayOfItems] = useState(anArray);
+    const [arrayOfItems, setArrayOfItems] = useState([]);
 
     let aTrialObject = {
         id: "",
@@ -25,12 +25,19 @@ function TrialComponent() {
     const [currentObject, setCurrentObject] = useState(aTrialObject);
 
     useEffect(() => {
-        // console.log('running use effect');
-        crud.retrieve();
-            // .then((response) => {
+        refreshData();
+    }, [ ]);
 
-            // });
-    }, [ anArray ]);
+    function refreshData() {
+        crud.retrieve()
+            .then((tasks) => {
+                var taskObjects = tasks.map(function(loopItem) {
+                    return { id: loopItem.id, series: loopItem.title, main: loopItem.description };
+                  });
+
+                setArrayOfItems(taskObjects);
+            });
+    }
 
     function addNew() {
         let objects = arrayOfItems;
@@ -98,6 +105,7 @@ function TrialComponent() {
             series: editItems[0].series
         })
     }
+
     return (
         <div>
             <p>String: {"A string"}</p>
@@ -105,7 +113,9 @@ function TrialComponent() {
             <button onClick={clickMessage}>Click</button>
             <ul>
                 {
-                    arrayOfItems.map((item, index) => (
+                    arrayOfItems.length === 0 
+                    ? (<li>loading...</li>)
+                    : arrayOfItems.map((item, index) => (
                         <li key={`name_${index}`}> 
                             series:  {item.series}
                             <button onClick={() => itemDeletion(item.id)}>Delete</button>
