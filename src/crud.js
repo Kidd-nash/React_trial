@@ -25,7 +25,7 @@ class Crud {
     //Retrieve
     retrieve () {
         console.log("retrieving");
-        return axios.get('http://localhost:8080/api/tasks/')
+        return axios.get('http://192.168.254.158:8080/api/tasks/')
             .then(function (response) {
             // handle success
             return response.data["hydra:member"];
